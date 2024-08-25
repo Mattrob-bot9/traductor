@@ -1,0 +1,46 @@
+import discord
+from discord.ext import commands
+import random
+import os
+
+print(os.listdir('img'))
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')
+
+@bot.command()
+async def heh(ctx, count_heh = 5):
+    await ctx.send("he" * count_heh)
+
+@bot.command()
+async def saludar(ctx, *, nombre:str=""):
+    if nombre!="":
+        await ctx.send(f"hola, {nombre}, como estas?")
+    else:
+        await ctx.send(f"hola , {ctx.author.name}, como estás?")
+
+@bot.command()
+async def numero(ctx):
+    numero_aleatorio = random.randint(0, 100)
+    await ctx.send(f"{numero_aleatorio}")
+
+@bot.command()
+async def mem(ctx):
+    memes=os.listdir("img")
+    meme=random.choice(memes)
+    with open(f'img/{meme}', 'rb') as f:
+        # ¡Vamos a almacenar el archivo de la biblioteca Discord convertido en esta variable!
+        picture = discord.File(f)
+    # A continuación, podemos enviar este archivo como parámetro.
+    await ctx.send(file=picture)
+
+bot.run("MTI2OTY1OTMwODE4Mjk5OTEzMA.GY9Dwp.bcuJzMMFJNbfymg1hFwmgrGMd43UuvvDWMCcIY")
